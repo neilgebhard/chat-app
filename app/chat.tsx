@@ -1,0 +1,172 @@
+'use client'
+
+import {
+  Session,
+  createClientComponentClient,
+} from '@supabase/auth-helpers-nextjs'
+import React, { useEffect, useRef, useState } from 'react'
+import { IoSend } from 'react-icons/io5'
+
+import type { Database } from '@/types/supabase'
+import { formatTimeAgo } from '..'
+
+type Message = Database['public']['Tables']['messages']['Row']
+type Channel = Database['public']['Tables']['channels']['Row']
+
+export default function Chat() {
+  const supabase = createClientComponentClient<Database>()
+  const [channelId, setChannelId] = useState(1)
+  const [messages, setMessages] = useState<Message[] | null>(null)
+  const [channels, setChannels] = useState<Channel[] | null>(null)
+  const [session, setSession] = useState<Session | null>(null)
+  const scrollToRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      setSession(session)
+    }
+
+    getSession()
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => setSession(session)
+    )
+
+    return () => authListener.subscription.unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        let { data } = await supabase
+          .from('messages')
+          .select('*')
+          .eq('channel_id', channelId)
+          .order('inserted_at', { ascending: true })
+        setMessages(data)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+    fetchMessages()
+  }, [channelId])
+
+  useEffect(() => {
+    const fetchChannels = async () => {
+      try {
+        let { data } = await supabase.from('channels').select('*')
+        setChannels(data)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+    fetchChannels()
+  }, [])
+
+  useEffect(() => {
+    const messageListener = supabase
+      .channel('public:messages')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages' },
+        (payload) => setMessages((m) => [...m, payload.new])
+      )
+      .subscribe()
+
+    return () => {
+      messageListener.unsubscribe()
+    }
+  }, [])
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
+    const message = e.target.elements.message.value
+    if (!message || !session) return
+    e.target.elements.message.value = ''
+    try {
+      await supabase.from('messages').insert([
+        {
+          message,
+          channel_id: channelId,
+          user_id: session.user.id,
+          username: session.user.email,
+        },
+      ])
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  useEffect(() => {
+    scrollToRef.current!.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  return (
+    <div className="flex h-screen">
+      <div className="w-36">
+        <Channels channels={channels} />
+      </div>
+      <div className="flex-grow px-4 overflow-scroll mb-14">
+        <Messages messages={messages} />
+        <div ref={scrollToRef} />
+        <div className="fixed bottom-4 right-4 left-40">
+          <form className="relative" onSubmit={handleSubmit}>
+            <button className="absolute right-1 top-1/2 -translate-y-1/2 border border-slate-400 px-2 py-1 rounded flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:border-slate-600">
+              send <IoSend className="text-slate-600" size={'.8em'} />
+            </button>
+            <input
+              id="message"
+              className="border border-slate-300 focus:border-slate-400 rounded w-full p-2 focus:outline-none"
+              placeholder="Send a message"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type ChannelsProps = {
+  channels: Channel[] | null
+}
+
+function Channels({ channels }: ChannelsProps) {
+  return (
+    <ul className="bg-fuchsia-950 h-full p-2">
+      {channels?.map((channel) => (
+        <li className="mb-1" key={channel.id}>
+          <div>
+            <span className="text-fuchsia-200 font-extralight">
+              # {channel.slug}
+            </span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+type MessagesProps = {
+  messages: Message[] | null
+}
+
+function Messages({ messages }: MessagesProps) {
+  return (
+    <ul className="mb-10">
+      {messages?.map((message) => (
+        <li className="mb-10" key={message.id}>
+          <div>
+            <span className="font-semibold text-sm">{message.username}</span>{' '}
+            <span className="text-slate-500 text-xs font-light tracking-tight ml-1">
+              {formatTimeAgo(message.inserted_at)}
+            </span>
+          </div>
+          <div>{message.message}</div>
+        </li>
+      ))}
+    </ul>
+  )
+}
