@@ -107,7 +107,11 @@ export default function Chat() {
   return (
     <div className="flex h-screen">
       <div className="w-36">
-        <Channels channels={channels} />
+        <Channels
+          channels={channels}
+          activeChannel={channelId}
+          setChannel={setChannelId}
+        />
       </div>
       <div className="flex-grow px-4 overflow-scroll mb-14">
         <Messages messages={messages} />
@@ -131,18 +135,25 @@ export default function Chat() {
 
 type ChannelsProps = {
   channels: Channel[] | null
+  activeChannel: number
+  setChannel: (id: number) => void
 }
 
-function Channels({ channels }: ChannelsProps) {
+function Channels({ channels, activeChannel, setChannel }: ChannelsProps) {
   return (
     <ul className="bg-fuchsia-950 h-full p-2">
       {channels?.map((channel) => (
         <li className="mb-1" key={channel.id}>
-          <div>
-            <span className="text-fuchsia-200 font-extralight">
-              # {channel.slug}
-            </span>
-          </div>
+          <button
+            className={`text-fuchsia-200 font-extralight cursor-pointer rounded w-full text-left px-2 py-1 ${
+              activeChannel === channel.id
+                ? 'bg-sky-700 text-white'
+                : 'hover:bg-fuchsia-900'
+            }`}
+            onClick={() => setChannel(channel.id)}
+          >
+            # {channel.slug}
+          </button>
         </li>
       ))}
     </ul>
@@ -157,10 +168,10 @@ function Messages({ messages }: MessagesProps) {
   return (
     <ul className="mb-10">
       {messages?.map((message) => (
-        <li className="mb-10" key={message.id}>
+        <li className="mb-3" key={message.id}>
           <div>
-            <span className="font-semibold text-sm">{message.username}</span>{' '}
-            <span className="text-slate-500 text-xs font-light tracking-tight ml-1">
+            <span className="font-semibold text-sm">{message.username}</span>
+            <span className="text-slate-500 text-xs font-light tracking-tight ml-2">
               {formatTimeAgo(message.inserted_at)}
             </span>
           </div>
