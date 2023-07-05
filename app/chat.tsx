@@ -84,7 +84,7 @@ export default function Chat() {
   }, [])
 
   useEffect(() => {
-    if (channels?.length > 0) {
+    if (channels && channels?.length > 0) {
       const activeChannel = channels?.filter(
         (channel) => channel.id === channelId
       )
