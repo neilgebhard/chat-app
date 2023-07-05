@@ -27,14 +27,5 @@ export default async function Home() {
     redirect('/signin')
   }
 
-  return (
-    <div>
-      {/* <form>
-        <button className="border px-3 py-2 rounded" formAction={handleSignOut}>
-          Log out
-        </button>
-      </form> */}
-      <Chat />
-    </div>
-  )
+  return <Chat />
 }
