@@ -20,7 +20,7 @@ type TopbarProps = {
 const Topbar = ({ session, channels, activeChannelId }: TopbarProps) => {
   const [channelName, setChannelName] = useState('general')
 
-  // Get active channel name
+  // Get name of active channel
   useEffect(() => {
     if (channels && channels?.length > 0) {
       const data = channels?.filter((channel) => channel.id === activeChannelId)
@@ -29,7 +29,7 @@ const Topbar = ({ session, channels, activeChannelId }: TopbarProps) => {
   }, [activeChannelId])
 
   return (
-    <div className="border-b fixed bg-white py-2 px-5 left-48 right-0">
+    <div className="border-b border-b-gray-800 fixed bg-gray-900 py-2 px-5 left-48 right-0 z-10">
       <div className="flex justify-between">
         <h2 className="text-xl font-bold"># {channelName}</h2>
         <UserDropdown session={session} />
@@ -55,7 +55,7 @@ function UserDropdown({ session }: UserDropdownProps) {
     <div className="text-right">
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-60 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+          <Menu.Button className="inline-flex w-full justify-center rounded-md bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
             <FaUserAlt />
           </Menu.Button>
         </div>
@@ -68,12 +68,12 @@ function UserDropdown({ session }: UserDropdownProps) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mt-2 min-w-[224px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="text-gray-300 absolute right-0 mt-2 min-w-[224px] origin-top-right divide-y divide-gray-500 rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (
                   <p
-                    className={`text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    className={`flex w-full items-center rounded-md px-2 py-4 text-sm`}
                   >
                     {session?.user.email}
                   </p>
@@ -85,8 +85,8 @@ function UserDropdown({ session }: UserDropdownProps) {
                 {({ active }) => (
                   <button
                     className={`${
-                      active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm font-semibold`}
+                      active && 'bg-gray-600 text-gray-300'
+                    } flex w-full items-center rounded-md px-2 py-2 text-sm font-semibold`}
                     onClick={signOut}
                   >
                     <VscSignOut className="mr-2 h-5 w-5" aria-hidden="true" />

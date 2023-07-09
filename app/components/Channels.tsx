@@ -2,8 +2,8 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import type { Database } from '@/types/supabase'
 import { AiOutlineClose } from 'react-icons/ai'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import useStore from '@/lib/useStore'
+import { HiOutlinePlusSm } from 'react-icons/hi'
+import { useStorage } from '../context/store'
 
 type Channel = Database['public']['Tables']['channels']['Row']
 
@@ -18,14 +18,14 @@ function Channels({ channels, activeChannel, setChannel }: ChannelsProps) {
 
   return (
     <>
-      <ul className="bg-fuchsia-950 h-full px-2 py-3">
+      <ul className="bg-zinc-900 h-full px-2 py-3 w-48 border-r border-r-zinc-800">
         {channels?.map((channel) => (
-          <li className="mb-1" key={channel.id}>
+          <li className="mb-1 w-48" key={channel.id}>
             <button
-              className={`text-fuchsia-200 font-extralight cursor-pointer rounded w-full text-left px-2 py-1 ${
+              className={`font-extralight cursor-pointer rounded w-full text-left px-2 py-1 ${
                 activeChannel === channel.id
                   ? 'bg-sky-700 text-white'
-                  : 'hover:bg-fuchsia-900'
+                  : 'text-zinc-400 hover:bg-zinc-800'
               }`}
               onClick={() => setChannel(channel.id)}
             >
@@ -47,7 +47,7 @@ type AddChannelModalProps = {
 }
 
 function AddChannelModal({ isOpen, setIsOpen }: AddChannelModalProps) {
-  const { insertChannel } = useStore()
+  const { insertChannel } = useStorage()
 
   const closeModal = () => {
     setIsOpen(false)
@@ -68,10 +68,15 @@ function AddChannelModal({ isOpen, setIsOpen }: AddChannelModalProps) {
   return (
     <>
       <li
-        className="text-fuchsia-200 font-extralight cursor-pointer rounded w-full text-left px-2 py-1"
+        className="text-zinc-400 font-extralight cursor-pointer rounded w-full text-left px-2 py-1 hover:bg-zinc-800"
         onClick={openModal}
       >
-        + Add channel
+        <div className="inline-flex items-center justify-center gap-2">
+          <span className="bg-zinc-700 rounded w-5 h-5 inline-flex items-center justify-center">
+            <HiOutlinePlusSm size={'1rem'} />
+          </span>{' '}
+          Add channel
+        </div>
       </li>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -98,17 +103,17 @@ function AddChannelModal({ isOpen, setIsOpen }: AddChannelModalProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all bg-zinc-800 text-zinc-200">
                   <div className="flex justify-between">
                     <Dialog.Title
                       as="h3"
-                      className="text-lg font-medium leading-6 text-gray-900"
+                      className="text-lg font-medium leading-6"
                     >
                       Create a channel
                     </Dialog.Title>
                     <AiOutlineClose
                       className="text-xl cursor-pointer"
-                      color="#333"
+                      color="#ccc"
                       onClick={closeModal}
                     />
                   </div>
@@ -118,7 +123,7 @@ function AddChannelModal({ isOpen, setIsOpen }: AddChannelModalProps) {
                         Name
                       </label>
                       <input
-                        className="border border-slate-300 w-full p-2 rounded"
+                        className="border border-zinc-500 w-full p-2 rounded bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                         id="name"
                         type="text"
                       />
@@ -126,7 +131,7 @@ function AddChannelModal({ isOpen, setIsOpen }: AddChannelModalProps) {
                     <div className="mt-4">
                       <button
                         type="button"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-zinc-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       >
                         Add Channel
                       </button>

@@ -9,8 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [session, setSession] = useState(null)
   const supabase = createClientComponentClient()
 
-  console.log('AuthContext body')
-
   useEffect(() => {
     const getSession = async () => {
       const { data: sesh } = await supabase.auth.getSession()
@@ -20,11 +18,8 @@ export const AuthProvider = ({ children }) => {
     getSession()
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-      }
+      (event, session) => {}
     )
-    console.log('AuthContext useEffect')
-
 
     return () => authListener.subscription.unsubscribe()
   }, [])
