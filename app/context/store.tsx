@@ -1,17 +1,31 @@
 'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import {
+  Session,
+  createClientComponentClient,
+} from '@supabase/auth-helpers-nextjs'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 import type { Database } from '@/types/supabase'
 type Message = Database['public']['Tables']['messages']['Row']
 type Channel = Database['public']['Tables']['channels']['Row']
 
-const StoreContext = createContext(null)
+type Store = {
+  session: Session | null
+  channels: Channel[]
+  messages: Message[]
+  activeChannelId: number
+  setActiveChannelId: (id: number) => void
+  insertChannel: (slug: string) => Promise<any>
+  insertMessage: (message: string) => Promise<any>
+  deleteMessage: (id: number) => Promise<any>
+}
+
+const StoreContext = createContext<Store>({} as Store)
 
 const PUBLIC_CHANNEL_ID = 1
 
-export const StoreProvider = ({ children }) => {
+export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null)
   const [channels, setChannels] = useState<Channel[]>([])
   const [messages, setMessages] = useState<Message[]>([])
@@ -21,8 +35,8 @@ export const StoreProvider = ({ children }) => {
 
   useEffect(() => {
     const getSession = async () => {
-      const { data } = await supabase.auth.getSession()
-      setSession(data)
+      const { data, error } = await supabase.auth.getSession()
+      setSession(data.session)
     }
 
     getSession()
@@ -45,7 +59,7 @@ export const StoreProvider = ({ children }) => {
           .select('*')
           .eq('channel_id', activeChannelId)
           .order('inserted_at', { ascending: true })
-        setMessages(data)
+        if (data) setMessages(data)
       } catch (error) {
         console.log('error', error)
       }
@@ -58,7 +72,7 @@ export const StoreProvider = ({ children }) => {
     const fetchChannels = async () => {
       try {
         let { data, error } = await supabase.from('channels').select('*')
-        setChannels(data)
+        if (data) setChannels(data)
       } catch (error) {
         console.log('error', error)
       }
@@ -177,4 +191,4 @@ export const StoreProvider = ({ children }) => {
   )
 }
 
-export const useStorage = () => useContext(StoreContext)
+export const useStore = () => useContext(StoreContext)

@@ -4,7 +4,8 @@ import type { Database } from '@/types/supabase'
 import { formatTimeAgo } from '@/index'
 import { BsTrash } from 'react-icons/bs'
 import { AiOutlineClose } from 'react-icons/ai'
-import { useStorage } from '../context/store'
+import { useStore } from '../context/store'
+import { Session } from '@supabase/auth-helpers-nextjs'
 
 type Message = Database['public']['Tables']['messages']['Row']
 
@@ -16,7 +17,7 @@ function Messages({ messages }: MessagesProps) {
   let [isOpen, setIsOpen] = useState(false)
   let [messageToDelete, setMessageToDelete] = useState<Message | null>(null)
 
-  const { session } = useStorage()
+  const { session } = useStore()
 
   const closeModal = () => {
     setIsOpen(false)
@@ -70,18 +71,18 @@ function Message({
 
   return (
     <li
-      className="group hover:bg-slate-800 px-4 py-2 relative break-words"
+      className="group hover:bg-neutral-800 px-4 py-2 relative break-words"
       key={message.id}
     >
       <div>
         <span
           className={`font-semibold text-sm ${
-            session?.user?.id === message.user_id && 'text-cyan-200'
+            session?.user?.id === message.user_id && 'text-teal-100'
           }`}
         >
           {message.username}
         </span>
-        <span className="text-gray-400 text-xs font-light tracking-tight ml-2">
+        <span className="text-neutral-400 text-xs font-light tracking-tight ml-2">
           {formatTimeAgo(message.inserted_at)}
         </span>
         {session?.user?.id === message.user_id && (
@@ -91,7 +92,7 @@ function Message({
           />
         )}
       </div>
-      <p className="font-light">{message.message}</p>
+      <p>{message.message}</p>
     </li>
   )
 }
@@ -107,7 +108,7 @@ function DeleteMessageModal({
   closeModal,
   message,
 }: DeleteMessageModalProps) {
-  const { deleteMessage } = useStorage()
+  const { deleteMessage } = useStore()
 
   const handleDelete = async () => {
     if (message) deleteMessage(message.id)
@@ -154,7 +155,7 @@ function DeleteMessageModal({
                   />
                 </div>
                 <div className="mt-4">
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-neutral-300">
                     Are you sure you want to delete this message? This cannot be
                     undone.
                   </p>
@@ -167,7 +168,7 @@ function DeleteMessageModal({
                     <span className="font-semibold text-sm">
                       {message?.username}
                     </span>
-                    <span className="text-gray-400 text-xs font-light tracking-tight ml-2">
+                    <span className="text-neutral-400 text-xs font-light tracking-tight ml-2">
                       {formatTimeAgo(message?.inserted_at)}
                     </span>
                   </div>

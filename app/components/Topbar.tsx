@@ -29,7 +29,7 @@ const Topbar = ({ session, channels, activeChannelId }: TopbarProps) => {
   }, [activeChannelId])
 
   return (
-    <div className="border-b border-b-gray-800 fixed bg-gray-900 py-2 px-5 left-48 right-0 z-10">
+    <div className="border-b border-b-neutral-800 fixed bg-neutral-900 py-2 px-5 left-48 right-0 z-10">
       <div className="flex justify-between">
         <h2 className="text-xl font-bold"># {channelName}</h2>
         <UserDropdown session={session} />
@@ -55,7 +55,7 @@ function UserDropdown({ session }: UserDropdownProps) {
     <div className="text-right">
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex w-full justify-center rounded-md bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+          <Menu.Button className="inline-flex w-full justify-center rounded-md bg-neutral-700 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
             <FaUserAlt />
           </Menu.Button>
         </div>
@@ -68,7 +68,7 @@ function UserDropdown({ session }: UserDropdownProps) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="text-gray-300 absolute right-0 mt-2 min-w-[224px] origin-top-right divide-y divide-gray-500 rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="text-neutral-300 absolute right-0 mt-2 min-w-[224px] origin-top-right divide-y divide-neutral-500 rounded-md bg-neutral-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (
@@ -85,7 +85,7 @@ function UserDropdown({ session }: UserDropdownProps) {
                 {({ active }) => (
                   <button
                     className={`${
-                      active && 'bg-gray-600 text-gray-300'
+                      active && 'bg-neutral-600 text-neutral-300'
                     } flex w-full items-center rounded-md px-2 py-2 text-sm font-semibold`}
                     onClick={signOut}
                   >
