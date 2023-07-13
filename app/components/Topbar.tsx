@@ -1,24 +1,15 @@
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { VscSignOut } from 'react-icons/vsc'
 import { FaUserAlt } from 'react-icons/fa'
 import { Database } from '@/types/supabase'
-import {
-  Session,
-  createClientComponentClient,
-} from '@supabase/auth-helpers-nextjs'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
+import { useStore } from '../context/store'
 
-type Channel = Database['public']['Tables']['channels']['Row']
-
-type TopbarProps = {
-  session: Session | null
-  channels: Channel[] | null
-  activeChannelId: number
-}
-
-const Topbar = ({ session, channels, activeChannelId }: TopbarProps) => {
+const Topbar = () => {
   const [channelName, setChannelName] = useState('general')
+  const { channels, activeChannelId } = useStore()
 
   // Get name of active channel
   useEffect(() => {
@@ -32,22 +23,19 @@ const Topbar = ({ session, channels, activeChannelId }: TopbarProps) => {
     <div className="border-b border-b-neutral-800 fixed bg-neutral-900 py-2 px-5 left-48 right-0 z-10">
       <div className="flex justify-between">
         <h2 className="text-xl font-bold"># {channelName}</h2>
-        <UserDropdown session={session} />
+        <UserDropdown />
       </div>
     </div>
   )
 }
 
-type UserDropdownProps = {
-  session: Session | null
-}
-
-function UserDropdown({ session }: UserDropdownProps) {
+function UserDropdown() {
   const supabase = createClientComponentClient<Database>()
   const router = useRouter()
+  const { session } = useStore()
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
+    await supabase.auth.signOut()
     router.refresh()
   }
 

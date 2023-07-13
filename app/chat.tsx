@@ -39,11 +39,7 @@ export default function Chat() {
         setChannel={setActiveChannelId}
       />
       <div className="h-full overflow-scroll">
-        <Topbar
-          channels={channels}
-          activeChannelId={activeChannelId}
-          session={session}
-        />
+        <Topbar />
         <Messages messages={messages} />
         <div ref={scrollToRef} />
         <div className="fixed bottom-1 right-1 left-[196px] bg-neutral-900">

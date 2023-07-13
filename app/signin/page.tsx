@@ -12,7 +12,7 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
   const [signinError, setSigninError] = useState(false)
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const email = e.currentTarget.email.value

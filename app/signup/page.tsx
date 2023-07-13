@@ -14,7 +14,7 @@ export default function SignUp() {
   )
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     setArePasswordsEqual(null)
@@ -75,8 +75,8 @@ export default function SignUp() {
           className="border border-neutral-300 w-full p-2 rounded"
           type="password"
           name="password"
-          minlength="4"
-          maxlength="30"
+          minLength={4}
+          maxLength={30}
           required
         />
       </div>
@@ -89,8 +89,8 @@ export default function SignUp() {
           className="border border-neutral-300 w-full p-2 rounded"
           type="password"
           name="confirmPassword"
-          minlength="4"
-          maxlength="30"
+          minLength={4}
+          maxLength={30}
           required
         />
       </div>

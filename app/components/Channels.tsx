@@ -1,9 +1,5 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { useState } from 'react'
 import type { Database } from '@/types/supabase'
-import { AiOutlineClose } from 'react-icons/ai'
-import { HiOutlinePlusSm } from 'react-icons/hi'
-import { useStore } from '../context/store'
 import AddChannelModal from './AddChannelModal'
 
 type Channel = Database['public']['Tables']['channels']['Row']
