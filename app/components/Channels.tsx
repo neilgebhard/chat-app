@@ -1,17 +1,11 @@
-import { useState } from 'react'
-import type { Database } from '@/types/supabase'
-import AddChannelModal from './AddChannelModal'
+import { useStore } from '../context/store'
+import { HiOutlinePlusSm } from 'react-icons/hi'
+import { useAddChannelModal } from '../context/addChannelModal'
 
-type Channel = Database['public']['Tables']['channels']['Row']
+function Channels() {
+  const { channels, activeChannelId, setActiveChannelId } = useStore()
 
-type ChannelsProps = {
-  channels: Channel[] | null
-  activeChannel: number
-  setChannel: (id: number) => void
-}
-
-function Channels({ channels, activeChannel, setChannel }: ChannelsProps) {
-  let [isOpen, setIsOpen] = useState(false)
+  const { openModal } = useAddChannelModal()
 
   return (
     <>
@@ -20,17 +14,27 @@ function Channels({ channels, activeChannel, setChannel }: ChannelsProps) {
           <li className="mb-1" key={channel.id}>
             <button
               className={`font-extralight cursor-pointer rounded text-left px-2 py-1 w-44 ${
-                activeChannel === channel.id
+                activeChannelId === channel.id
                   ? 'bg-sky-700 text-white'
                   : 'text-zinc-400 hover:bg-zinc-800'
               }`}
-              onClick={() => setChannel(channel.id)}
+              onClick={() => setActiveChannelId(channel.id)}
             >
               # {channel.slug}
             </button>
           </li>
         ))}
-        <AddChannelModal isOpen={isOpen} setIsOpen={setIsOpen} />
+        <li
+          className="text-zinc-400 font-extralight cursor-pointer rounded w-full text-left px-2 py-1 hover:bg-zinc-800"
+          onClick={openModal}
+        >
+          <div className="inline-flex items-center justify-center gap-2">
+            <span className="bg-zinc-700 rounded w-5 h-5 inline-flex items-center justify-center">
+              <HiOutlinePlusSm size={'1rem'} />
+            </span>{' '}
+            Add channel
+          </div>
+        </li>
       </ul>
     </>
   )
