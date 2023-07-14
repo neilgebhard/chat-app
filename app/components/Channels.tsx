@@ -10,17 +10,17 @@ function Channels() {
   return (
     <>
       <ul className="bg-zinc-900 h-full px-2 py-3 border-r border-r-zinc-800 w-48">
-        {channels?.map((channel) => (
-          <li className="mb-1" key={channel.id}>
+        {channels?.map((c) => (
+          <li className="mb-1" key={c.id}>
             <button
               className={`font-extralight cursor-pointer rounded text-left px-2 py-1 w-44 ${
-                activeChannelId === channel.id
+                activeChannelId === c.id
                   ? 'bg-sky-700 text-white'
                   : 'text-zinc-400 hover:bg-zinc-800'
               }`}
-              onClick={() => setActiveChannelId(channel.id)}
+              onClick={() => setActiveChannelId(c.id)}
             >
-              # {channel.slug}
+              # {c.slug}
             </button>
           </li>
         ))}

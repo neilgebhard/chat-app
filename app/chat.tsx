@@ -10,14 +10,7 @@ import { useStore } from './context/store'
 export default function Chat() {
   const scrollToRef = useRef<HTMLDivElement>(null)
 
-  const {
-    session,
-    channels,
-    messages,
-    activeChannelId,
-    setActiveChannelId,
-    insertMessage,
-  } = useStore()
+  const { session, messages, insertMessage } = useStore()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -33,12 +26,8 @@ export default function Chat() {
 
   return (
     <div className="flex h-screen bg-neutral-900 text-neutral-300">
-      <Channels
-        channels={channels}
-        activeChannel={activeChannelId}
-        setChannel={setActiveChannelId}
-      />
-      <div className="h-full overflow-scroll">
+      <Channels />
+      <div className="h-full overflow-scroll flex-grow">
         <Topbar />
         <Messages messages={messages} />
         <div ref={scrollToRef} />

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useStore } from '../context/store'
 
 const Topbar = () => {
-  const [channelName, setChannelName] = useState('general')
+  const [channelName, setChannelName] = useState('public')
   const { channels, activeChannelId } = useStore()
 
   // Get name of active channel
