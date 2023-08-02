@@ -95,7 +95,7 @@ export const DeleteMessageModalProvider = ({
                         {message?.username}
                       </span>
                       <span className="text-neutral-400 text-xs font-light tracking-tight ml-2">
-                        {formatTimeAgo(message?.inserted_at)}
+                        {formatTimeAgo(message?.inserted_at || '')}
                       </span>
                     </div>
                     <p className="font-light">{message?.message}</p>
