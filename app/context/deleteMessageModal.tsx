@@ -9,13 +9,11 @@ import { useStore } from './store'
 
 type Message = Database['public']['Tables']['messages']['Row']
 
-type DeleteMessageModal = {
+type ContextType = {
   openModal: (message: Message) => void
 }
 
-const DeleteMessageModalContext = createContext<DeleteMessageModal>(
-  {} as DeleteMessageModal
-)
+const DeleteMessageModalContext = createContext<ContextType>({} as ContextType)
 
 export const DeleteMessageModalProvider = ({
   children,

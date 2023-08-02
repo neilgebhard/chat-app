@@ -5,13 +5,11 @@ import { createContext, Fragment, useContext, useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { useStore } from './store'
 
-type AddChannelModal = {
+type ContextType = {
   openModal: () => void
 }
 
-const AddChannelModalContext = createContext<AddChannelModal>(
-  {} as AddChannelModal
-)
+const AddChannelModalContext = createContext<ContextType>({} as ContextType)
 
 export const AddChannelModalProvider = ({
   children,
@@ -40,7 +38,6 @@ export const AddChannelModalProvider = ({
       }
     }
     const slug = target.elements.name.value.trim()
-    console.log(slug)
     if (!slug) return
     insertChannel(slug)
     closeModal()

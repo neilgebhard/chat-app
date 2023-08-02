@@ -88,7 +88,6 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'messages' },
         (payload) => {
-          console.log('payload', payload)
           if (payload.new && payload.new.channel_id === activeChannelId) {
             setMessages((messages) => [...messages, payload.new as Message])
           }
@@ -105,7 +104,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       messageListener.unsubscribe()
     }
-  }, [])
+  }, [activeChannelId])
 
   // Listen to channels
   useEffect(() => {

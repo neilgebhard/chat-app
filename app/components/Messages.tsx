@@ -6,11 +6,7 @@ import { useDeleteMessageModal } from '../context/deleteMessageModal'
 
 type Message = Database['public']['Tables']['messages']['Row']
 
-type MessagesProps = {
-  messages: Message[] | null
-}
-
-function Messages({ messages }: MessagesProps) {
+function Messages({ messages }: { messages: Message[] | null }) {
   return (
     <ul className="mt-14 mb-20">
       {messages?.map((message) => (
@@ -22,11 +18,7 @@ function Messages({ messages }: MessagesProps) {
 
 export default Messages
 
-type MessageProps = {
-  message: Message
-}
-
-function Message({ message }: MessageProps) {
+function Message({ message }: { message: Message }) {
   const { session } = useStore()
   const { openModal } = useDeleteMessageModal()
 
