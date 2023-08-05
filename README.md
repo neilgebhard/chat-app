@@ -35,7 +35,7 @@ To run this chat app locally, follow these steps:
 
 2. Install the required dependencies using `npm install`.
 
-3. Set up your Supabase account and configure the environment variables in `.env.local` using `.env.local` as a blueprint.
+3. Set up your Supabase account and configure the environment variables in `.env.local` using `.env.example` as a blueprint.
 
 4. Start the server using `npm run dev`.
 
