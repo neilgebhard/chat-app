@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`bg-neutral-900 text-neutral-200 ${inter.className}`}>
         <StoreProvider>
           <AddChannelModalProvider>
             <DeleteMessageModalProvider>{children}</DeleteMessageModalProvider>

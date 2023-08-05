@@ -51,8 +51,8 @@ export default function SignUp() {
   }
 
   return (
-    <form className="max-w-sm mx-auto text-neutral-800" onSubmit={handleSubmit}>
-      <p className="text-3xl font-bold my-10 text-center">slak</p>
+    <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
+      <p className="text-2xl font-bold py-10 text-center">Chat App</p>
       <h1 className="text-4xl font-bold text-center">Sign up</h1>
       <div className="mt-10">
         <label className="block" htmlFor="email">
@@ -60,10 +60,12 @@ export default function SignUp() {
         </label>
         <input
           id="email"
-          className="border border-neutral-300 w-full p-2 rounded"
+          className="bg-neutral-800 border border-neutral-600 focus:border-neutral-400 rounded w-full p-3 focus:outline-none"
           type="email"
           name="email"
           placeholder="user@email.com"
+          disabled={isLoading}
+          required
         />
       </div>
       <div className="mt-4">
@@ -72,11 +74,12 @@ export default function SignUp() {
         </label>
         <input
           id="password"
-          className="border border-neutral-300 w-full p-2 rounded"
+          className="bg-neutral-800 border border-neutral-600 focus:border-neutral-400 rounded w-full p-3 focus:outline-none"
           type="password"
           name="password"
           minLength={4}
           maxLength={30}
+          disabled={isLoading}
           required
         />
       </div>
@@ -86,24 +89,28 @@ export default function SignUp() {
         </label>
         <input
           id="confirmPassword"
-          className="border border-neutral-300 w-full p-2 rounded"
+          className="bg-neutral-800 border border-neutral-600 focus:border-neutral-400 rounded w-full p-3 focus:outline-none"
           type="password"
           name="confirmPassword"
           minLength={4}
           maxLength={30}
+          disabled={isLoading}
           required
         />
       </div>
       {arePasswordsEqual === false && (
         <div className="mt-2 text-red-600">Passwords are not equal.</div>
       )}
-      <button className="border p-2 rounded-md text-neutral-50 bg-fuchsia-900 hover:bg-fuchsia-800 mt-4 w-full text-lg">
+      <button
+        className="border-neutral-600 px-2 py-2 rounded-md text-neutral-100 bg-neutral-700 hover:bg-neutral-600 mt-6 w-full text-lg"
+        disabled={isLoading}
+      >
         {isLoading ? <BeatLoader color="#fff" size={10} /> : 'Sign up'}
       </button>
       <p className="text-sm text-neutral-500 text-center mt-5">
         Already have an account?
       </p>
-      <p className="text-sm text-blue-600 text-center mt-1 hover:underline cursor-pointer">
+      <p className="text-sm text-blue-500 text-center mt-1 hover:underline cursor-pointer">
         <Link href="/signin">Log in here</Link>
       </p>
     </form>
