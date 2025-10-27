@@ -40,7 +40,3 @@ To run this chat app locally, follow these steps:
 4. Start the server using `npm run dev`.
 
 5. Navigate to `http://localhost:3000` in your web browser to access the application.
-
-## Feedback and Contributions
-
-I'm always open to feedback, collaboration, and constructive criticism. Feel free to explore this project, raise issues, or suggest improvements. Happy coding.
