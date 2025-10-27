@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to this real-time chat app! This project is a simple and intuitive chat application that enables real-time communication between users. Whether you want to chat with friends, family, or team members, this app has got you covered. Say goodbye to delays in messaging and enjoy seamless conversations in real time!
+A real-time chat application built with Next.js, TypeScript, Tailwind CSS, and Supabase. It supports secure user authentication, dynamic chat room creation, and instant messaging via Supabase's realtime server. The frontend is styled with Tailwind and structured for responsiveness, while the backend uses PostgreSQL for persistent data and Supabase Auth for session management. Designed for modular scalability and deployed via Vercel.
 
 ## Key Features
 
